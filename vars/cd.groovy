@@ -6,7 +6,7 @@ def call(Map cdParams) {
         API_URL = cdParams.apiUrl
         ORG = cdParams.org
         SPACE = cdParams.space
-        ENV_CREDS = credentials(cdParams.credskey)
+        ENV_CREDS = credentials(cdParams.credsKey)
         USERNAME = "${env.ENV_CREDS_USR}"
         PASSWORD = "${env.ENV_CREDS_PSW}"
         HOME = "${env.WORKSPACE}"

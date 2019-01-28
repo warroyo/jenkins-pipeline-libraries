@@ -37,7 +37,8 @@ def call(Map body) {
                 }
             }
             stage('Dev - CD'){
-                cd()
+                cd(apiUrl: pipelineParams.devApiUrl, org: pipelineParams.devOrg, space: pipelineParams.devSpace,
+                    credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
             }
             stage('QA - CD'){
                 cd()
