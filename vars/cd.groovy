@@ -3,15 +3,15 @@ def call(Map cdParams) {
         docker { image 'nulldriver/cf-cli-resource' }
     }
     environment { 
-        API_URL = cdParams.apiUrl
-        ORG = cdParams.org
-        SPACE = cdParams.space
-        ENV_CREDS = credentials(cdParams.credsKey)
+        API_URL = "${cdParams.apiUrl}"
+        ORG = "${cdParams.org}"
+        SPACE = "${cdParams.space}"
+        ENV_CREDS = credentials("${cdParams.credsKey}")
         USERNAME = "${env.ENV_CREDS_USR}"
         PASSWORD = "${env.ENV_CREDS_PSW}"
         HOME = "${env.WORKSPACE}"
-        ENV_FILE = cParams.envFile
-        ROUTE = cdParams.domain
+        ENV_FILE = "${cParams.envFile}"
+        ROUTE = "${cdParams.domain}"
     }
     stages{
         stage('Deploy Venerable') {

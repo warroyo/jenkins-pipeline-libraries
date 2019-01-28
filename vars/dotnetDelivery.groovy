@@ -7,7 +7,7 @@ def call(Map body) {
     pipeline {
         agent any
         environment { 
-            APP_NAME = pipelineParams.appName
+            APP_NAME = "${pipelineParams.appName}"
         }
         stages {
             stage('CI') {
@@ -36,16 +36,22 @@ def call(Map body) {
                 }
             }
             stage('Dev - CD'){
+                steps{
                 cd(apiUrl: pipelineParams.devApiUrl, org: pipelineParams.devOrg, space: pipelineParams.devSpace,
                     credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
+                }
             }
             stage('QA - CD'){
+                steps{
                 cd(apiUrl: pipelineParams.qaApiUrl, org: pipelineParams.qaOrg, space: pipelineParams.qaSpace,
                     credsKey: pipelineParams.qaCredsKey, envFile: pipelineParams.qaEnvFile, domain: pipelineParams.qaDomain)
+                }
             }
              stage('Prod - CD'){
+                 steps{
                 cd(apiUrl: pipelineParams.prodApiUrl, org: pipelineParams.prodOrg, space: pipelineParams.prodSpace,
                     credsKey: pipelineParams.prodCredsKey, envFile: pipelineParams.prodEnvFile, domain: pipelineParams.prodDomain)
+                 }
             }
             
         }
