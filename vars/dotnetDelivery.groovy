@@ -1,4 +1,9 @@
-def call(Map pipelineParams) {
+def call(Closure body) {
+    def pipelineParams = [:]
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = pipelineParams
+
+    body()
 
     pipeline {
         agent any
@@ -41,7 +46,9 @@ def call(Map pipelineParams) {
                             skipDefaultCheckout true
                         }
                         steps {
-                            deployVenerable(cdParams: pipelineParams.dev)
+                            deployVenerable{
+                                cdParams = pipelineParams.dev
+                            }
                         }
                     }
                     stage('Smoke Test') {
@@ -57,7 +64,9 @@ def call(Map pipelineParams) {
                             skipDefaultCheckout true
                         }
                         steps {
-                           flip(cdParams: pipelineParams.dev)
+                           flip{
+                               cdParams = pipelineParams.dev
+                           }
                         }
                     }
                 }

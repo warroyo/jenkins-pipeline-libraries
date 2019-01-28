@@ -1,4 +1,9 @@
-def call(def cdParams) {
+def call(Closure body) {
+    def cdParams = [:]
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = cdParams
+
+    body()
 
     env.API_URL = "${cdParams.apiUrl}"
     env.ORG = "${cdParams.org}"
