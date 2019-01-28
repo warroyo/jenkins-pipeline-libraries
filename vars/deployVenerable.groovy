@@ -7,7 +7,7 @@ def call(def cdParams) {
     env.USERNAME = "${env.ENV_CREDS_USR}"
     env.PASSWORD = "${env.ENV_CREDS_PSW}"
     env.HOME = "${env.WORKSPACE}"
-    env.ENV_FILE = "${cParams.envFile}"
+    env.ENV_FILE = "${cdParams.envFile}"
 
 
     node{
