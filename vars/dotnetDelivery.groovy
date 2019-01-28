@@ -31,12 +31,12 @@ def call(Map pipelineParams) {
                     }
                 }
             }
-            // stage('Dev - CD'){
-            //     steps{
-            //     cd(apiUrl: pipelineParams.devApiUrl, org: pipelineParams.devOrg, space: pipelineParams.devSpace,
-            //         credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
-            //     }
-            // }
+            stage('Dev - CD'){
+                steps{
+                cd(apiUrl: pipelineParams.devApiUrl, org: pipelineParams.devOrg, space: pipelineParams.devSpace,
+                    credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
+                }
+            }
             // stage('QA - CD'){
             //     steps{
             //     cd(apiUrl: pipelineParams.qaApiUrl, org: pipelineParams.qaOrg, space: pipelineParams.qaSpace,
