@@ -10,7 +10,6 @@ def call(def cdParams) {
     env.ENV_FILE = "${cdParams.envFile}"
 
 
-    node{
         echo 'Deploying....'
         copyArtifacts(projectName: "${env.JOB_BASE_NAME}");
 
@@ -21,6 +20,5 @@ def call(def cdParams) {
         def deploy = libraryResource "com/warroyo/pipeline/scripts/deploy-venerable.sh"
         writeFile file: "deploy-venerable.sh", text: deploy
         sh script: 'cd artifact && ../deploy-venerable.sh', label: 'push app'
-    }
 }
 
