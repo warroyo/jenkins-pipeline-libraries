@@ -1,4 +1,5 @@
 def call(Map cdParams) {
+node {
     agent {
         docker { image 'nulldriver/cf-cli-resource' }
     }
@@ -51,4 +52,5 @@ def call(Map cdParams) {
             }
         }
     }
+}
 }
