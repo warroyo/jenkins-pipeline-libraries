@@ -1,4 +1,4 @@
-def deployVenerable(def cdParams) {
+def call(def cdParams) {
 
     env.API_URL = "${cdParams.apiUrl}"
     env.ORG = "${cdParams.org}"
@@ -24,14 +24,3 @@ def deployVenerable(def cdParams) {
     }
 }
 
-def flip(Map cdParams) {
-
-    env. ROUTE = "${cdParams.domain}"
-
-    node{
-        echo 'Flipping Traffic....'
-        def flip = libraryResource "com/warroyo/pipeline/scripts/flip.sh"
-        writeFile file: "flip.sh", text: flip
-        sh script: './flip.sh', label: 'flipping traffic'
-    }
-}
