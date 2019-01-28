@@ -24,7 +24,6 @@ def call(Map body) {
                             sh script:'dotnet build --configuration Release', label: 'build app'
                             sh script: 'dotnet publish --configuration Release --output artifact', label: 'publish artifact'
                             sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
-                            sh script: 'cp -r scripts artifact/.', label: 'copy scripts to artifact'
                             archiveArtifacts artifacts: 'artifact/*'
                         }
                     }
