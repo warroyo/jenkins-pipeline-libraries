@@ -32,8 +32,35 @@ def call(Map pipelineParams) {
                 }
             }
             stage('Dev - CD'){
-                cd(apiUrl: pipelineParams.devApiUrl, org: pipelineParams.devOrg, space: pipelineParams.devSpace,
-                    credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                stages{
+                    stage('Deploy Venerable') {
+                        options {
+                            skipDefaultCheckout true
+                        }
+                        steps {
+                            deployVenerable(cdParams: pipelineParams.dev)
+                        }
+                    }
+                    stage('Smoke Test') {
+                        options {
+                            skipDefaultCheckout true
+                        }
+                        steps {
+                            echo 'Running tests'
+                        }
+                    }
+                    stage('Flip') {
+                        options {
+                            skipDefaultCheckout true
+                        }
+                        steps {
+                           flip(cdParams: pipelineParams.dev)
+                        }
+                    }
+                }
             }
             // stage('QA - CD'){
             //     steps{
