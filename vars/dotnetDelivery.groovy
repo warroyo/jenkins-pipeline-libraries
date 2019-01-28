@@ -41,10 +41,12 @@ def call(Map body) {
                     credsKey: pipelineParams.devCredsKey, envFile: pipelineParams.devEnvFile, domain: pipelineParams.devDomain)
             }
             stage('QA - CD'){
-                cd()
+                cd(apiUrl: pipelineParams.qaApiUrl, org: pipelineParams.qaOrg, space: pipelineParams.qaSpace,
+                    credsKey: pipelineParams.qaCredsKey, envFile: pipelineParams.qaEnvFile, domain: pipelineParams.qaDomain)
             }
              stage('Prod - CD'){
-                cd()
+                cd(apiUrl: pipelineParams.prodApiUrl, org: pipelineParams.prodOrg, space: pipelineParams.prodSpace,
+                    credsKey: pipelineParams.prodCredsKey, envFile: pipelineParams.prodEnvFile, domain: pipelineParams.prodDomain)
             }
             
         }
