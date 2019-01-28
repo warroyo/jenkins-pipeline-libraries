@@ -46,9 +46,7 @@ def call(Closure body) {
                             skipDefaultCheckout true
                         }
                         steps {
-                            deployVenerable{
-                                cdParams = pipelineParams.dev
-                            }
+                            deployVenerable(cdParams: pipelineParams.dev)
                         }
                     }
                     stage('Smoke Test') {
@@ -64,9 +62,7 @@ def call(Closure body) {
                             skipDefaultCheckout true
                         }
                         steps {
-                           flip{
-                               cdParams = pipelineParams.dev
-                           }
+                           flip(cdParams: pipelineParams.dev)
                         }
                     }
                 }
