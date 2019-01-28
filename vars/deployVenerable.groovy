@@ -9,7 +9,7 @@ def call(def cdParams) {
     env.HOME = "${env.WORKSPACE}"
     env.ENV_FILE = "${cdParams.envFile}"
 
-
+        echo "${cdParams.apiUrl}"
         echo 'Deploying....'
         copyArtifacts(projectName: "${env.JOB_BASE_NAME}");
 

@@ -1,6 +1,6 @@
 def call(def cdParams) {
 
-    env. ROUTE = "${cdParams.domain}"
+    env.ROUTE = "${cdParams.domain}"
 
         echo 'Flipping Traffic....'
         def flip = libraryResource "com/warroyo/pipeline/scripts/flip.sh"
