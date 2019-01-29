@@ -12,7 +12,7 @@ def call(def cdParams) {
         def login = libraryResource "com/warroyo/pipeline/scripts/cflogin.sh"
         writeFile file: "cflogin.sh", text: login
         sh "chmod +x cflogin.sh"
-        withCredentials([usernamePassword(credentialsId: ${cdParams.credsKey}, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+        withCredentials([usernamePassword(credentialsId: cdParams.credsKey, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
             sh script: './cflogin.sh', label: 'login to pcf'
         }
 
