@@ -46,7 +46,7 @@ def call(Closure body) {
                     deployGreen(pipelineParams.dev)
                 }
             }
-            stage('Smoke Test') {
+            stage('Smoke Test - Dev') {
                 agent {
                     docker { image 'postman/newman' }
                 }
@@ -57,7 +57,7 @@ def call(Closure body) {
                     echo 'Running tests'
                 }
             }
-            stage('Flip') {
+            stage('Flip - Dev') {
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -80,7 +80,7 @@ def call(Closure body) {
                     deployGreen(pipelineParams.qa)
                 }
             }
-            stage('Smoke Test') {
+            stage('Smoke Test - QA') {
                 agent {
                     docker { image 'postman/newman' }
                 }
@@ -91,7 +91,7 @@ def call(Closure body) {
                     echo 'Running tests'
                 }
             }
-            stage('Flip') {
+            stage('Flip - QA') {
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -116,7 +116,7 @@ def call(Closure body) {
                     deployGreen(pipelineParams.prod)
                 }
             }
-            stage('Smoke Test') {
+            stage('Smoke Test - Prod') {
                 agent {
                     docker { image 'postman/newman' }
                 }
@@ -127,7 +127,7 @@ def call(Closure body) {
                     echo 'Running tests'
                 }
             }
-            stage('Flip') {
+            stage('Flip - Prod') {
                 input {
                     message "Should we make it live?"
                 }
