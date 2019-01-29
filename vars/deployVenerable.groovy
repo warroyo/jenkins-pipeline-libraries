@@ -3,20 +3,18 @@ def call(def cdParams) {
     env.API_URL = "${cdParams.apiUrl}"
     env.ORG = "${cdParams.org}"
     env.SPACE = "${cdParams.space}"
-    env.ENV_CREDS = credentials("${cdParams.credsKey}")
-    env.USERNAME = "${env.ENV_CREDS_USR}"
-    env.PASSWORD = "${env.ENV_CREDS_PSW}"
     env.HOME = "${env.WORKSPACE}"
     env.ENV_FILE = "${cdParams.envFile}"
 
-        echo "${cdParams.ENV_CREDS}"
         echo 'Deploying....'
         copyArtifacts(projectName: "${env.JOB_BASE_NAME}");
 
         def login = libraryResource "com/warroyo/pipeline/scripts/cflogin.sh"
         writeFile file: "cflogin.sh", text: login
         sh "chmod +x cflogin.sh"
-        sh script: './cflogin.sh', label: 'login to pcf'
+        withCredentials([usernamePassword(credentialsId: ${cdParams.credsKey}, passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+            sh script: './cflogin.sh', label: 'login to pcf'
+        }
 
         def deploy = libraryResource "com/warroyo/pipeline/scripts/deploy-venerable.sh"
         writeFile file: "deploy-venerable.sh", text: deploy
