@@ -33,6 +33,8 @@ def call(Closure body) {
                     sh 'ls -l'
                 }
             }
+
+            //dev env
             stage('Deploy Green - Dev') {
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
@@ -66,19 +68,81 @@ def call(Closure body) {
                     flip(pipelineParams.dev)
                 }
             }
+            //qa env
+            stage('Deploy Green - QA') {
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    deployGreen(pipelineParams.qa)
+                }
+            }
+            stage('Smoke Test') {
+                agent {
+                    docker { image 'postman/newman' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    echo 'Running tests'
+                }
+            }
+            stage('Flip') {
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    flip(pipelineParams.qa)
+                }
+            }
 
-            // stage('QA - CD'){
-            //     steps{
-            //     cd(apiUrl: pipelineParams.qaApiUrl, org: pipelineParams.qaOrg, space: pipelineParams.qaSpace,
-            //         credsKey: pipelineParams.qaCredsKey, envFile: pipelineParams.qaEnvFile, domain: pipelineParams.qaDomain)
-            //     }
-            // }
-            //  stage('Prod - CD'){
-            //      steps{
-            //     cd(apiUrl: pipelineParams.prodApiUrl, org: pipelineParams.prodOrg, space: pipelineParams.prodSpace,
-            //         credsKey: pipelineParams.prodCredsKey, envFile: pipelineParams.prodEnvFile, domain: pipelineParams.prodDomain)
-            //      }
-            // }
+            //prod env
+            stage('Deploy Green - Prod') {
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    deployGreen(pipelineParams.prod)
+                }
+            }
+            stage('Smoke Test') {
+                agent {
+                    docker { image 'postman/newman' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    echo 'Running tests'
+                }
+            }
+            stage('Flip') {
+                input {
+                    message "Should we make it live?"
+                }
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    flip(pipelineParams.prod)
+                }
+            }
+
+
             
         }
     }
