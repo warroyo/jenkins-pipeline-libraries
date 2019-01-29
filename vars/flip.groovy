@@ -1,9 +1,4 @@
-def call(Closure body) {
-      def cdParams = [:]
-    body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = cdParams
-
-    body()
+def call(def cdParams) {
 
     env.ROUTE = "${cdParams.domain}"
 

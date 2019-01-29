@@ -50,6 +50,9 @@ def call(Closure body) {
                         }
                     }
                     stage('Smoke Test') {
+                        agent {
+                            docker { image 'postman/newman' }
+                        }
                         options {
                             skipDefaultCheckout true
                         }
