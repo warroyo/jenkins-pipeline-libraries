@@ -24,7 +24,8 @@ def call(Closure body) {
                     sh script:'dotnet build --configuration Release', label: 'build app'
                     sh script: 'dotnet publish --configuration Release --output artifact', label: 'publish artifact'
                     sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
-                    archiveArtifacts artifacts: 'artifact/*'
+                    //archiveArtifacts artifacts: 'artifact/*'
+                    stash name: "app", includes: "artifact/*"
                 }
             }
             stage('Test') {
