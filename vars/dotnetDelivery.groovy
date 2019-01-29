@@ -33,9 +33,7 @@ def call(Closure body) {
                     sh 'ls -l'
                 }
             }
-
-
-            stage('Deploy Venerable - Dev') {
+            stage('Deploy Green - Dev') {
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -43,7 +41,7 @@ def call(Closure body) {
                     skipDefaultCheckout true
                 }
                 steps {
-                    deployVenerable(pipelineParams.dev)
+                    deployGreen(pipelineParams.dev)
                 }
             }
             stage('Smoke Test') {
