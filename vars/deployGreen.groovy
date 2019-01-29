@@ -6,10 +6,8 @@ def call(def cdParams) {
     env.HOME = "${env.WORKSPACE}"
     env.ENV_FILE = "${cdParams.envFile}"
 
-        echo "${env.JOB_NAME}"
-        echo "${env.JOB_BASE_NAME}"
         echo 'Deploying....'
-        copyArtifacts(projectName: "${env.JOB_BASE_NAME}");
+        copyArtifacts(projectName: "${env.JOB_NAME}");
 
         def login = libraryResource "com/warroyo/pipeline/scripts/cflogin.sh"
         writeFile file: "cflogin.sh", text: login
