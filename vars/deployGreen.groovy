@@ -9,7 +9,6 @@ def call(def cdParams) {
         echo 'Deploying....'
         //copyArtifacts(projectName: "${env.JOB_NAME}", buildNumber: "${BUILD_NUMBER}");
         unstash "app"
-        sh 'ls -l'
 
         def login = libraryResource "com/warroyo/pipeline/scripts/cflogin.sh"
         writeFile file: "cflogin.sh", text: login

@@ -71,6 +71,7 @@ def call(Closure body) {
             }
             //qa env
             stage('Deploy Green - QA') {
+                when { buildingTag() }
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -82,6 +83,7 @@ def call(Closure body) {
                 }
             }
             stage('Smoke Test - QA') {
+                when { buildingTag() }
                 agent {
                     docker { image 'postman/newman' }
                 }
@@ -93,6 +95,7 @@ def call(Closure body) {
                 }
             }
             stage('Flip - QA') {
+                when { buildingTag() }
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -106,6 +109,7 @@ def call(Closure body) {
 
             //prod env
             stage('Deploy Green - Prod') {
+                when { buildingTag() }
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
@@ -118,6 +122,7 @@ def call(Closure body) {
                 }
             }
             stage('Smoke Test - Prod') {
+                when { buildingTag() }
                 agent {
                     docker { image 'postman/newman' }
                 }
@@ -129,6 +134,7 @@ def call(Closure body) {
                 }
             }
             stage('Flip - Prod') {
+                when { buildingTag() }
                 input {
                     message "Should we make it live?"
                 }
