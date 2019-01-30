@@ -134,7 +134,10 @@ def call(Closure body) {
                 }
             }
             stage('Flip - Prod') {
-                when { buildingTag() }
+                when { 
+                    beforeInput true
+                    buildingTag() 
+                }
                 input {
                     message "Should we make it live?"
                 }
