@@ -10,7 +10,7 @@ def call(def cdParams, def percent) {
 
 
     contents = readYaml (file: "${cdParams.envFile}") 
-    instances = contents.instances.toString()
+    instances = contents.instances.toInteger()
     total = 2 * instances
     decimal = percent / 100
     scale = Math.round(total * percent)
