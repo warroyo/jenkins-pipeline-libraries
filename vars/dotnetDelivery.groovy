@@ -150,7 +150,6 @@ def call(Closure body) {
                 }
             }
 
-            prod env
             stage('Deploy Green - Prod') {
                 when { buildingTag() }
                 agent {
