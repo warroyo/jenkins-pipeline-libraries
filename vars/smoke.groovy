@@ -5,5 +5,5 @@ def call(def cdParams) {
     env.ROUTE = "${env.APP_NAME}.${domain}"
 
     sh script: 'ls -l'
-    sh script: 'inspec exec smoke/', label: 'running smoke tests'
+    sh script: 'inspec --help', label: 'running smoke tests'
 }
