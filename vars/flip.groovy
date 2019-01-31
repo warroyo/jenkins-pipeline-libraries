@@ -1,6 +1,6 @@
 def call(def cdParams) {
 
-    contents = readYaml (file: "${cdParams.envFile}") }
+    contents = readYaml (file: "${cdParams.envFile}") 
     echo contents.domain.toString()
     env.ROUTE = contents.domain.toString()
 
