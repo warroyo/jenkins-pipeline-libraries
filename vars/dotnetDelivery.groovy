@@ -61,13 +61,14 @@ def call(Closure body) {
                     }
                 }
                 agent {
-                    docker { image 'postman/newman' }
+                    docker { image 'chef/inspec' }
                 }
                 options {
                     skipDefaultCheckout true
                 }
                 steps {
                     echo 'Running tests'
+                    smoke(pipelineParams.dev)
                 }
             }
             stage('Flip - Dev') {
