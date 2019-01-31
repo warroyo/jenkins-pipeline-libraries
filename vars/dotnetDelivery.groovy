@@ -61,7 +61,10 @@ def call(Closure body) {
                     }
                 }
                 agent {
-                    docker { image 'chef/inspec:2' }
+                    docker { 
+                        image 'chef/inspec'
+                        args '-it --entrypoint=/bin/sh'
+                     }
                 }
                 options {
                     skipDefaultCheckout true
