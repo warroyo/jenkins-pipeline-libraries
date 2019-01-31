@@ -2,7 +2,7 @@ def call(def cdParams) {
 
     contents = readYaml (file: "${cdParams.envFile}") 
     domain = contents.domain.toString()
-    env.ROUTE = "${env.APP_NAME}.${domain}"
+    env.ROUTE = "https://${env.APP_NAME}.${domain}"
     echo env.ROUTE
 
     sh script: 'ls -l'
