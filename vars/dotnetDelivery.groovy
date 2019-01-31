@@ -21,17 +21,34 @@ def call(Closure body) {
                 }
                 steps {
                     echo 'Building..'
-                    sh script:'dotnet build --configuration Release', label: 'build app'
-                    sh script: 'dotnet publish --configuration Release --output artifact', label: 'publish artifact'
-                    sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
-                    //archiveArtifacts artifacts: 'artifact/*'
-                    stash name: "app", includes: "artifact/*"
+                    sh script:'cd src && dotnet build --configuration Release', label: 'build app'
                 }
             }
             stage('Test') {
+                environment {
+                    HOME = '/tmp'
+                } 
+                agent {
+                    docker { image 'microsoft/dotnet:2.2-sdk' }
+                }
                 steps {
                     echo 'Testing..'
-                    sh 'ls -l'
+                    sh script:'cd tests/unitTests && dotnet test', label: 'build app'
+                }
+            }
+            stage('Publish') {
+                 environment {
+                    HOME = '/tmp'
+                } 
+                agent {
+                    docker { image 'microsoft/dotnet:2.2-sdk' }
+                }
+                steps {
+                    echo 'Publishing..'
+                    sh script: 'cd src && dotnet publish --configuration Release --output ../artifact', label: 'publish artifact'
+                    sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
+                    //archiveArtifacts artifacts: 'artifact/*'
+                    stash name: "app", includes: "artifact/*"
                 }
             }
 

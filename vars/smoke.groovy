@@ -5,5 +5,5 @@ def call(def cdParams) {
     env.ROUTE = "https://${env.APP_NAME}.${domain}"
     env.HOME='/tmp'
 
-    sh script: 'inspec exec smoke', label: 'running smoke tests'
+    sh script: 'inspec exec tests/smoke', label: 'running smoke tests'
 }
