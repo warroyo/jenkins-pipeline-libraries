@@ -13,7 +13,7 @@ def call(def cdParams, def percent) {
     instances = contents.instances.toInteger()
     total = 2 * instances
     decimal = percent / 100
-    scale = Math.round(total * percent)
+    scale = Math.round(total * decimal)
     echo "${scale}"
     env.SCALE = scale
 
