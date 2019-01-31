@@ -22,6 +22,7 @@ def call(Closure body) {
                 steps {
                     echo 'Building..'
                     sh script:'cd src && dotnet build --configuration Release', label: 'build app'
+                    stash name: "build", includes: "src/bin/**"
                 }
             }
             stage('Test') {
@@ -45,6 +46,7 @@ def call(Closure body) {
                 }
                 steps {
                     echo 'Publishing..'
+                    unstash "build"
                     sh script: 'cd src && dotnet publish --configuration Release --output ../artifact', label: 'publish artifact'
                     sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
                     //archiveArtifacts artifacts: 'artifact/*'
