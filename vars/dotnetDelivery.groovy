@@ -12,47 +12,47 @@ def call(Closure body) {
         }
         stages {
 
-            // stage('Build') {
-            //     environment {
-            //         HOME = '/tmp'
-            //     } 
-            //     agent {
-            //         docker { image 'microsoft/dotnet:2.2-sdk' }
-            //     }
-            //     steps {
-            //         echo 'Building..'
-            //         sh script:'dotnet build --configuration Release', label: 'build app'
-            //         sh script: 'dotnet publish --configuration Release --output artifact', label: 'publish artifact'
-            //         sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
-            //         //archiveArtifacts artifacts: 'artifact/*'
-            //         stash name: "app", includes: "artifact/*"
-            //     }
-            // }
-            // stage('Test') {
-            //     steps {
-            //         echo 'Testing..'
-            //         sh 'ls -l'
-            //     }
-            // }
+            stage('Build') {
+                environment {
+                    HOME = '/tmp'
+                } 
+                agent {
+                    docker { image 'microsoft/dotnet:2.2-sdk' }
+                }
+                steps {
+                    echo 'Building..'
+                    sh script:'dotnet build --configuration Release', label: 'build app'
+                    sh script: 'dotnet publish --configuration Release --output artifact', label: 'publish artifact'
+                    sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
+                    //archiveArtifacts artifacts: 'artifact/*'
+                    stash name: "app", includes: "artifact/*"
+                }
+            }
+            stage('Test') {
+                steps {
+                    echo 'Testing..'
+                    sh 'ls -l'
+                }
+            }
 
-            // //dev env
-            // stage('Deploy Green - Dev') {
-            //     when{
-            //         anyOf { 
-            //             buildingTag()
-            //             branch 'master'
-            //         }
-            //     }
-            //     agent {
-            //         docker { image 'nulldriver/cf-cli-resource' }
-            //     }
-            //     options {
-            //         skipDefaultCheckout true
-            //     }
-            //     steps {
-            //         deployGreen(pipelineParams.dev)
-            //     }
-            // }
+            //dev env
+            stage('Deploy Green - Dev') {
+                when{
+                    anyOf { 
+                        buildingTag()
+                        branch 'master'
+                    }
+                }
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    deployGreen(pipelineParams.dev)
+                }
+            }
             stage('Smoke Test - Dev') {
                 when{
                     anyOf { 
@@ -107,13 +107,17 @@ def call(Closure body) {
             stage('Smoke Test - QA') {
                 when { buildingTag() }
                 agent {
-                    docker { image 'postman/newman' }
+                    docker { 
+                        image 'chef/inspec'
+                        args '-it --entrypoint=""'
+                     }
                 }
                 options {
                     skipDefaultCheckout true
                 }
                 steps {
                     echo 'Running tests'
+                    smoke(pipelineParams.qa)
                 }
             }
             stage('Flip - QA') {
@@ -146,13 +150,17 @@ def call(Closure body) {
             stage('Smoke Test - Prod') {
                 when { buildingTag() }
                 agent {
-                    docker { image 'postman/newman' }
+                    docker { 
+                        image 'chef/inspec'
+                        args '-it --entrypoint=""'
+                     }
                 }
                 options {
                     skipDefaultCheckout true
                 }
                 steps {
                     echo 'Running tests'
+                    smoke(pipelineParams.prod)
                 }
             }
             stage('Flip - Prod') {

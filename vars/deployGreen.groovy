@@ -3,7 +3,7 @@ def call(def cdParams) {
     env.API_URL = "${cdParams.apiUrl}"
     env.ORG = "${cdParams.org}"
     env.SPACE = "${cdParams.space}"
-    env.HOME = "${env.WORKSPACE}"
+    env.HOME = "/tmp"
     env.ENV_FILE = "${cdParams.envFile}"
 
         echo 'Deploying....'
