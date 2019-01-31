@@ -163,7 +163,7 @@ def call(Closure body) {
                     skipDefaultCheckout true
                 }
                 steps {
-                    deployGreen(pipelineParams.prod)
+                    deployGreen(pipelineParams.prod, 'true')
                 }
             }
             stage('Smoke Test - Prod') {
@@ -182,7 +182,45 @@ def call(Closure body) {
                     smoke(pipelineParams.prod)
                 }
             }
-            stage('Flip - Prod') {
+            stage('scale 25% - Prod') {
+                when { 
+                    beforeInput true
+                    buildingTag() 
+                }
+                input {
+                    message "Should we make it live?"
+                }
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    canary(pipelineParams.prod,25)
+                    sh script: 'sleep 30', label: 'run some tests'
+                }
+            }
+             stage('scale 50% - Prod') {
+                when { 
+                    beforeInput true
+                    buildingTag() 
+                }
+                input {
+                    message "Should we make it live?"
+                }
+                agent {
+                    docker { image 'nulldriver/cf-cli-resource' }
+                }
+                options {
+                    skipDefaultCheckout true
+                }
+                steps {
+                    canary(pipelineParams.prod,50)
+                    sh script: 'sleep 30', label: 'run some tests'
+                }
+            }
+            stage('scale 100% - Prod') {
                 when { 
                     beforeInput true
                     buildingTag() 
@@ -200,6 +238,7 @@ def call(Closure body) {
                     flip(pipelineParams.prod)
                 }
             }
+
 
 
             

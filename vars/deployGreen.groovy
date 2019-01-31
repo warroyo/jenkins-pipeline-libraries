@@ -1,10 +1,11 @@
-def call(def cdParams) {
+def call(def cdParams, def canary='false') {
 
     env.API_URL = "${cdParams.apiUrl}"
     env.ORG = "${cdParams.org}"
     env.SPACE = "${cdParams.space}"
     env.HOME = "/tmp"
     env.ENV_FILE = "${cdParams.envFile}"
+    env.CANARY = "${canary}"
 
         echo 'Deploying....'
         //copyArtifacts(projectName: "${env.JOB_NAME}", buildNumber: "${BUILD_NUMBER}");
