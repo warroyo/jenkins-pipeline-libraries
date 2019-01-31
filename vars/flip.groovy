@@ -1,6 +1,8 @@
 def call(def cdParams) {
 
-    env.ROUTE = "${cdParams.domain}"
+    contents = readYaml (file: "${cdParams.envFile}") }
+    echo contents.domain.toString()
+    env.ROUTE = contents.domain.toString()
 
     echo 'Flipping Traffic....'
     def flip = libraryResource "com/warroyo/pipeline/scripts/flip.sh"
