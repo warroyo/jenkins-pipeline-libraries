@@ -39,7 +39,7 @@ def call(Closure body) {
             stage('Deploy Green - Dev') {
                 when{
                     anyOf { 
-                        \buildingTag()
+                        buildingTag()
                         branch 'master'
                     }
                 }
@@ -56,7 +56,7 @@ def call(Closure body) {
             stage('Smoke Test - Dev') {
                 when{
                     anyOf { 
-                        \buildingTag()
+                        buildingTag()
                         branch 'master'
                     }
                 }
@@ -73,7 +73,7 @@ def call(Closure body) {
             stage('Flip - Dev') {
                 when{
                     anyOf { 
-                        \buildingTag()
+                        buildingTag()
                         branch 'master'
                     }
                 }
