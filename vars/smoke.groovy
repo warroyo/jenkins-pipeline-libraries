@@ -6,4 +6,5 @@ def call(def cdParams) {
 
     sh script: 'ls -l'
     sh script: 'which inspec', label: 'running smoke tests'
+    sh script: 'inspec exec smoke', label: 'running smoke tests'
 }
