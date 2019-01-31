@@ -37,22 +37,22 @@ def call(Closure body) {
             //         sh script:'cd tests/unitTests && dotnet test', label: 'build app'
             //     }
             // }
-            stage('Publish') {
-                 environment {
-                    HOME = '/tmp'
-                } 
-                agent {
-                    docker { image 'microsoft/dotnet:2.2-sdk' }
-                }
-                steps {
-                    echo 'Publishing..'
-                    //unstash "build"
-                    sh script: 'cd src && dotnet publish --configuration Release --output ../artifact', label: 'publish artifact'
-                    sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
-                    //archiveArtifacts artifacts: 'artifact/*'
-                    stash name: "app", includes: "artifact/*"
-                }
-            }
+            // stage('Publish') {
+            //      environment {
+            //         HOME = '/tmp'
+            //     } 
+            //     agent {
+            //         docker { image 'microsoft/dotnet:2.2-sdk' }
+            //     }
+            //     steps {
+            //         echo 'Publishing..'
+            //         unstash "build"
+            //         sh script: 'cd src && dotnet publish --configuration Release --output ../artifact', label: 'publish artifact'
+            //         sh script: 'cp *.yml artifact/.', label: 'copy manifests to artifact'
+            //         //archiveArtifacts artifacts: 'artifact/*'
+            //         stash name: "app", includes: "artifact/*"
+            //     }
+            // }
 
             //dev env
             // stage('Deploy Green - Dev') {
@@ -153,35 +153,35 @@ def call(Closure body) {
             // }
 
             //prod env
-            stage('Deploy Green - Prod') {
-                when { buildingTag() }
-                agent {
-                    docker { image 'nulldriver/cf-cli-resource' }
-                }
+            // stage('Deploy Green - Prod') {
+            //     when { buildingTag() }
+            //     agent {
+            //         docker { image 'nulldriver/cf-cli-resource' }
+            //     }
 
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    deployGreen(pipelineParams.prod, 'true')
-                }
-            }
-            stage('Smoke Test - Prod') {
-                when { buildingTag() }
-                agent {
-                    docker { 
-                        image 'chef/inspec'
-                        args '-it --entrypoint=""'
-                     }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    echo 'Running tests'
-                    smoke(pipelineParams.prod)
-                }
-            }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         deployGreen(pipelineParams.prod, 'true')
+            //     }
+            // }
+            // stage('Smoke Test - Prod') {
+            //     when { buildingTag() }
+            //     agent {
+            //         docker { 
+            //             image 'chef/inspec'
+            //             args '-it --entrypoint=""'
+            //          }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         echo 'Running tests'
+            //         smoke(pipelineParams.prod)
+            //     }
+            // }
             stage('scale 25% - Prod') {
                 when { 
                     beforeInput true
