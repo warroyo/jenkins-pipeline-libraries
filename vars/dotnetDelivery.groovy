@@ -55,102 +55,102 @@ def call(Closure body) {
             }
 
             //dev env
-            stage('Deploy Green - Dev') {
-                when{
-                    anyOf { 
-                        buildingTag()
-                        branch 'master'
-                    }
-                }
-                agent {
-                    docker { image 'nulldriver/cf-cli-resource' }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    deployGreen(pipelineParams.dev)
-                }
-            }
-            stage('Smoke Test - Dev') {
-                when{
-                    anyOf { 
-                        buildingTag()
-                        branch 'master'
-                    }
-                }
-                agent {
-                    docker { 
-                        image 'chef/inspec'
-                        args '-it --entrypoint=""'
-                     }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    echo 'Running tests'
-                    smoke(pipelineParams.dev)
-                }
-            }
-            stage('Flip - Dev') {
-                when{
-                    anyOf { 
-                        buildingTag()
-                        branch 'master'
-                    }
-                }
-                agent {
-                    docker { image 'nulldriver/cf-cli-resource' }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    flip(pipelineParams.dev)
-                }
-            }
-            //qa env
-            stage('Deploy Green - QA') {
-                when { buildingTag() }
-                agent {
-                    docker { image 'nulldriver/cf-cli-resource' }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    deployGreen(pipelineParams.qa)
-                }
-            }
-            stage('Smoke Test - QA') {
-                when { buildingTag() }
-                agent {
-                    docker { 
-                        image 'chef/inspec'
-                        args '-it --entrypoint=""'
-                     }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    echo 'Running tests'
-                    smoke(pipelineParams.qa)
-                }
-            }
-            stage('Flip - QA') {
-                when { buildingTag() }
-                agent {
-                    docker { image 'nulldriver/cf-cli-resource' }
-                }
-                options {
-                    skipDefaultCheckout true
-                }
-                steps {
-                    flip(pipelineParams.qa)
-                }
-            }
+            // stage('Deploy Green - Dev') {
+            //     when{
+            //         anyOf { 
+            //             buildingTag()
+            //             branch 'master'
+            //         }
+            //     }
+            //     agent {
+            //         docker { image 'nulldriver/cf-cli-resource' }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         deployGreen(pipelineParams.dev)
+            //     }
+            // }
+            // stage('Smoke Test - Dev') {
+            //     when{
+            //         anyOf { 
+            //             buildingTag()
+            //             branch 'master'
+            //         }
+            //     }
+            //     agent {
+            //         docker { 
+            //             image 'chef/inspec'
+            //             args '-it --entrypoint=""'
+            //          }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         echo 'Running tests'
+            //         smoke(pipelineParams.dev)
+            //     }
+            // }
+            // stage('Flip - Dev') {
+            //     when{
+            //         anyOf { 
+            //             buildingTag()
+            //             branch 'master'
+            //         }
+            //     }
+            //     agent {
+            //         docker { image 'nulldriver/cf-cli-resource' }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         flip(pipelineParams.dev)
+            //     }
+            // }
+            // //qa env
+            // stage('Deploy Green - QA') {
+            //     when { buildingTag() }
+            //     agent {
+            //         docker { image 'nulldriver/cf-cli-resource' }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         deployGreen(pipelineParams.qa)
+            //     }
+            // }
+            // stage('Smoke Test - QA') {
+            //     when { buildingTag() }
+            //     agent {
+            //         docker { 
+            //             image 'chef/inspec'
+            //             args '-it --entrypoint=""'
+            //          }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         echo 'Running tests'
+            //         smoke(pipelineParams.qa)
+            //     }
+            // }
+            // stage('Flip - QA') {
+            //     when { buildingTag() }
+            //     agent {
+            //         docker { image 'nulldriver/cf-cli-resource' }
+            //     }
+            //     options {
+            //         skipDefaultCheckout true
+            //     }
+            //     steps {
+            //         flip(pipelineParams.qa)
+            //     }
+            // }
 
             //prod env
             stage('Deploy Green - Prod') {
