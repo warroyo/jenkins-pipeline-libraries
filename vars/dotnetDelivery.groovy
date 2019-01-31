@@ -53,7 +53,6 @@ def call(Closure body) {
                 }
             }
 
-            dev env
             stage('Deploy Green - Dev') {
                 when{
                     anyOf { 
