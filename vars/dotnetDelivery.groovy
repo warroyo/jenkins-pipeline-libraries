@@ -62,8 +62,7 @@ def call(Closure body) {
                 }
                 agent {
                     docker { 
-                        image 'chef/inspec'
-                        args '-it --entrypoint="sh"'
+                        image 'warroyo90/inspec'
                      }
                 }
                 options {
