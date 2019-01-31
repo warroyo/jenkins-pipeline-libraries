@@ -37,9 +37,11 @@ def call(Closure body) {
 
             //dev env
             stage('Deploy Green - Dev') {
-                when {
-                      buildingTag()
-                      branch 'master'
+                when{
+                    anyOf { 
+                        \buildingTag()
+                        branch 'master'
+                    }
                 }
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
@@ -52,9 +54,11 @@ def call(Closure body) {
                 }
             }
             stage('Smoke Test - Dev') {
-                when {
-                      buildingTag()
-                      branch 'master'
+                when{
+                    anyOf { 
+                        \buildingTag()
+                        branch 'master'
+                    }
                 }
                 agent {
                     docker { image 'postman/newman' }
@@ -67,10 +71,12 @@ def call(Closure body) {
                 }
             }
             stage('Flip - Dev') {
-                 when {
-                      buildingTag()
-                      branch 'master'
-                  }
+                when{
+                    anyOf { 
+                        \buildingTag()
+                        branch 'master'
+                    }
+                }
                 agent {
                     docker { image 'nulldriver/cf-cli-resource' }
                 }
