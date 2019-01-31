@@ -61,7 +61,7 @@ def call(Closure body) {
                     }
                 }
                 agent {
-                    docker { image 'chef/inspec' }
+                    docker { image 'chef/inspec:3.4' }
                 }
                 options {
                     skipDefaultCheckout true
